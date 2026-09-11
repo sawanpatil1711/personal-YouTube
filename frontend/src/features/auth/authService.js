@@ -6,5 +6,9 @@ export const loginUser = async (data) => {
         data
     )
     return response.data;
+}
 
+export const getCurrentUser = async () => {
+    const response = await api.get("/users/me")
+    return response.data
 }
