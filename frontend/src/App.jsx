@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { getCurrentUser } from "./features/auth/authService.js"
-import { login } from "./features/auth/authSlice.js"
+import { login, setLoading } from "./features/auth/authSlice.js"
 import { useDispatch } from 'react-redux'
 import './App.css'
 import AppRoutes from './routes/AppRoutes'
@@ -19,6 +19,8 @@ function App() {
         console.log("user restored")
       } catch (error) {
         console.log("Error fetching current user:", error)
+      } finally {
+        dispatch(setLoading(false))
       }
     }
     fetchCurrentUser()
