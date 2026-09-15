@@ -26,7 +26,7 @@ function Login() {
 
             dispatch(login(response.data.user))
 
-            console.log("user saved in redux");
+            // console.log("user saved in redux");
 
             navigate("/")
 
