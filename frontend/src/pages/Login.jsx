@@ -31,7 +31,7 @@ function Login() {
             navigate("/")
 
         } catch (error) {
-            console.log("login error", error)
+            console.log("error message", error.response?.data?.message || "Something went wrong");
         }
     };
 
