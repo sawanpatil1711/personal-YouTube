@@ -4,6 +4,7 @@ import Register from "../pages/Register.jsx";
 import Home from "../pages/Home.jsx"
 import ProtectedRoute from "../components/ProtectedRoute.jsx"
 import Profile from "../pages/Profile.jsx";
+import MainLayout from "../layouts/MainLayout.jsx";
 
 function AppRoutes(){
     return(
@@ -11,12 +12,14 @@ function AppRoutes(){
         <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={
                 <ProtectedRoute>
                     <Profile/>
                 </ProtectedRoute>
             } />
+            </Route>
         </Routes>
     )
 }

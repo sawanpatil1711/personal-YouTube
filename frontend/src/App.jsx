@@ -16,7 +16,7 @@ function App() {
 
         dispatch(login(response.data))
 
-        console.log("user restored")
+        console.log("user restored", response.data)
       } catch (error) {
         console.log("Error fetching current user:", error)
       } finally {

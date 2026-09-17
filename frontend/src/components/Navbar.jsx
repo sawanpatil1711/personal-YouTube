@@ -1,11 +1,14 @@
 import { logoutUser } from "../features/auth/authService"
 import { logout } from "../features/auth/authSlice"
 import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+
 
 
 function Navbar(){
 
+    const {isAuthenticated} = useSelector((state)=>state.auth)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -24,9 +27,12 @@ function Navbar(){
         }
     }
     return(
-        <div>
-            <button onClick={handleLogout}>logout</button>
-        </div>
+        <header className="h-14 border-b flex items-center px-4">
+            <h1 className="text-xl font-bold"> YouTube Clone</h1>
+            <div>
+                {isAuthenticated ? (<button onClick={handleLogout}>Logout</button>) : (<Link to="/login">Login</Link>)}
+            </div>
+        </header>
     )    
 }
 
