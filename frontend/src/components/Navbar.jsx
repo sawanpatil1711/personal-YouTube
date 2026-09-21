@@ -27,10 +27,10 @@ function Navbar(){
         }
     }
     return(
-        <header className="h-14 border-b flex items-center px-4">
-            <h1 className="text-xl font-bold"> YouTube Clone</h1>
+        <header className="h-14 border-b flex items-center justify-between px-4">
+            <Link to="/" className="text-xl font-bold"> YouTube Clone</Link>
             <div>
-                {isAuthenticated ? (<button onClick={handleLogout}>Logout</button>) : (<Link to="/login">Login</Link>)}
+                {isAuthenticated ? (<button onClick={handleLogout}>Logout</button>) : (<div><Link to="/login">Login</Link>/<Link to="/register">Register</Link></div>)}
             </div>
         </header>
     )    

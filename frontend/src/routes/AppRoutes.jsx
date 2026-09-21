@@ -13,12 +13,12 @@ function AppRoutes(){
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={
-                <ProtectedRoute>
-                    <Profile/>
-                </ProtectedRoute>
-            } />
+                <Route path="/" element={<Home />} />
+                <Route path="/profile" element={
+                    <ProtectedRoute>
+                        <Profile/>
+                    </ProtectedRoute>
+                } />
             </Route>
         </Routes>
     )
