@@ -5,6 +5,7 @@ import Home from "../pages/Home.jsx"
 import ProtectedRoute from "../components/ProtectedRoute.jsx"
 import Profile from "../pages/Profile.jsx";
 import MainLayout from "../layouts/MainLayout.jsx";
+import WatchVideo from "../pages/watchVideo.jsx";
 
 function AppRoutes(){
     return(
@@ -12,6 +13,7 @@ function AppRoutes(){
         <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/video/:videoId" element={<WatchVideo />} />
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/profile" element={

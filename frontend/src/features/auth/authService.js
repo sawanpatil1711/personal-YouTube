@@ -25,8 +25,3 @@ export const registerUser = async (formData) => {
     )
     return response.data
 }
-
-export const getAllVideos = async () => {
-    const response = await api.get("/videos/")
-    return response.data
-}

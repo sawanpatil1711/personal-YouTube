@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import VideoCard from "../components/VideoCard"
-import { getAllVideos } from "../features/auth/authService.js"
+import { getAllVideos } from "../features/video/videoService.js"
 
 function Home(){
 
@@ -17,7 +17,7 @@ function Home(){
         }
         fetchVideos()
     },[])
-     console.log("video data", videos)
+    // console.log(videos)
     return(
         <> 
             {/* <Navbar/> */}
