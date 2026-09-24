@@ -181,4 +181,26 @@ const updateVideoById = asyncHandler(async (req, res)=>{
 
 })
 
-export {uploadVideo, getAllVideos, getVideoById, deleteVideoById, updateVideoById}
+const incrementViews =  asyncHandler( async (req, res) => {
+    const { videoId } = req.params
+    const currentVideo = await Video.findById(videoId)
+
+    if(!currentVideo){
+        throw new ApiError(404, "Video not found")
+    }
+    const video = await Video.findByIdAndUpdate(
+        videoId,
+        {
+            $inc:{
+                views: 1
+            }
+        },
+        {
+            new : true
+        }
+    )
+
+    return res.status(200).json(new ApiResponse(200, video, "views updated successfully"))
+})
+
+export {uploadVideo, getAllVideos, getVideoById, deleteVideoById, updateVideoById, incrementViews}

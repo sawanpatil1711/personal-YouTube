@@ -1,4 +1,4 @@
-import { getVideoById } from "../features/video/videoService"
+import { getVideoById, incrementViews } from "../features/video/videoService"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { formatDistanceToNow } from "date-fns";
@@ -10,9 +10,10 @@ function WatchVideo(){
     useEffect(() => {
         const fetchVideo = async ()=>{
             try {
+                await incrementViews(videoId)
                 const response = await getVideoById(videoId)
-                console.log("watch video data", response.data)
                 setvideo(response.data)
+                console.log("watch video data", video)
             } catch (error) {
                 console.log('error fatching wathVideo data', error)
             }
