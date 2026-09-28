@@ -17,7 +17,6 @@ export const incrementViews = async (videoId) => {
 export const videoLike = async (videoId) => {
     
     const response = await api.post(`/likes/v/${videoId}`)
-    console.log("videolike service", response)
     return response.data
     
 }

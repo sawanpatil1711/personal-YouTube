@@ -1,7 +1,6 @@
 
 function VideoPlayer({video}){
 
-    console.log("videoplayer component is runing ")
     return(
         <>        
             <video

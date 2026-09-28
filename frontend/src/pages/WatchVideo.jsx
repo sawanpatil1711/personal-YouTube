@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import VideoPlayer from "../components/VideoPlayer"
 import LikeButton from "../components/LikeButton"
 import UserInfo from "../components/UserInfo";
+import CommentSection from "../components/CommentSection";
 
 function WatchVideo(){
     const [video, setvideo] = useState(null)
@@ -29,7 +30,6 @@ function WatchVideo(){
         }
         fetchVideo()
     },[videoId])
-    
     useEffect(()=>{
         const fetchLikeStatus = async ()=>{
             try {
@@ -84,6 +84,8 @@ function WatchVideo(){
             <p className="mt-4">
                 {video.description}
             </p>
+
+            <CommentSection videoId={videoId}/>
         </div>
     );
 }
