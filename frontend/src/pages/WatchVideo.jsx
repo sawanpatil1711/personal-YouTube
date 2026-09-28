@@ -1,9 +1,12 @@
 import { getVideoById, incrementViews, videoLike, videoLikeStatus } from "../features/video/videoService"
-import likeIcon from "../assets/like.png"
-import likedIcon from "../assets/liked.png"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { formatDistanceToNow } from "date-fns";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import VideoPlayer from "../components/VideoPlayer"
+import LikeButton from "../components/LikeButton"
+import UserInfo from "../components/UserInfo";
 
 function WatchVideo(){
     const [video, setvideo] = useState(null)
@@ -12,6 +15,7 @@ function WatchVideo(){
         isLiked: false
     })
     const { videoId } = useParams()
+    const { isAuthenticated } = useSelector((state)=>state.auth)
     // console.log("video id",videoId)
     useEffect(() => {
         const fetchVideo = async ()=>{
@@ -23,6 +27,10 @@ function WatchVideo(){
                 console.log('error fatching wathVideo data', error)
             }
         }
+        fetchVideo()
+    },[videoId])
+    
+    useEffect(()=>{
         const fetchLikeStatus = async ()=>{
             try {
                 const response = await videoLikeStatus(videoId)
@@ -33,64 +41,37 @@ function WatchVideo(){
             }
         }
         fetchLikeStatus()
-        fetchVideo()
-    },[videoId])
+    }, [videoId, isAuthenticated])
     if(!video){
         return  <h1>loading...</h1>
     }
 
 
-    const hendelLike = async () => {
+    const handleLike = async () => {
+        if(!isAuthenticated){
+                toast.error("Please login first")
+                return;
+            }
+
         try {
             await videoLike(videoId)
             const response = await videoLikeStatus(videoId)
             setlike(response.data)
         } catch (error) {
-            console.log("hendelLike error", error)
+            console.log("handelLike error message", error.response?.data?.message || error);
         }
     }
     return (
         <div className="max-w-5xl mx-auto">
-            <video
-                controls
-                className="w-full rounded-lg"
-            >
-                <source
-                    src={video.videoFile}
-                    type="video/mp4"
-                />
-            </video>
+            
+            <VideoPlayer video={video}/>
 
-            <h1 className="text-2xl font-bold mt-4">
-                {video.title}
-            </h1>
+            <UserInfo creator={video.creator}/>
 
-            <div className="flex items-center gap-3 mt-4">
-                <img
-                    src={video.creator.avatar}
-                    alt={video.creator.username}
-                    className="w-12 h-12 rounded-full"
-                />
-
-                <div>
-                    <h3 className="font-semibold">
-                        {video.creator.username}
-                    </h3>
-                </div>
-            </div>
-
-            <button
-                onClick={hendelLike}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg"
-            >
-                <img
-                    src={like.isLiked ? likedIcon : likeIcon}
-                    alt="like"
-                    className="w-6 h-6"
-                />
-
-                <span>{like.likesCount}</span>
-            </button>
+            <LikeButton 
+            like={like}
+            hendelLike={handleLike}
+            />
 
             <div className="text-gray-500 mt-2">
                 {video.views} views • {" "}
