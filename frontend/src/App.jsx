@@ -4,6 +4,7 @@ import { login, setLoading } from "./features/auth/authSlice.js"
 import { useDispatch } from 'react-redux'
 import './App.css'
 import AppRoutes from './routes/AppRoutes'
+import { Toaster } from "react-hot-toast";
 
 function App() {
 
@@ -27,7 +28,10 @@ function App() {
   },[])
   
   return (
+  <>
+    <Toaster position="top-right" />
     <AppRoutes/>
+  </>
   )
 }
 

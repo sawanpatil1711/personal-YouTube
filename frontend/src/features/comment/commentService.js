@@ -9,3 +9,8 @@ export const addComment = async (videoId, userComment) => {
     const response = await api.post(`/comments/${videoId}`, {userComment})
     return response.data
 }
+
+export const deleteComment = async (commentId) => {
+    const response = await api.delete(`/comments/${commentId}`)
+    return response.data
+}

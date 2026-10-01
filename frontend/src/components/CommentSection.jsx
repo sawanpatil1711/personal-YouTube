@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react"
-import { getComment, addComment } from "../features/comment/commentService"
+import { getComment, addComment, deleteComment } from "../features/comment/commentService"
 import UserInfo from "./UserInfo"
+import { useSelector } from "react-redux"
+import useRequireAuth from "../hook/useRequireAuth"
 
-function CommentSection(videoId){
+function CommentSection({videoId}){
     const [comments, setComments]= useState([])
     const [userComment, setUserComment] = useState("")
+    const { user } = useSelector((state) => state.auth)
+    const requireAuth = useRequireAuth()
+
     useEffect(()=>{
         const fatchComment = async () => {
             try {
-                const response = await getComment(videoId.videoId)
+                const response = await getComment(videoId)
                 setComments(response.data)
             } catch (error) {
                 console.log("error fatching comment",error)
@@ -19,12 +24,27 @@ function CommentSection(videoId){
 
     const handleComment = async () => {
         try {
-            await addComment(videoId.videoId, userComment)
+            if (!requireAuth()) return;
+            await addComment(videoId, userComment)
             setUserComment("")
-            const response = await getComment(videoId.videoId)
+            const response = await getComment(videoId)
             setComments(response.data)
         } catch (error) {
             console.log("error handling user comment", error)
+        }
+    }
+
+    const handleDelete = async (commentId) => {
+        try {
+            await deleteComment(commentId)
+            setComments(
+                comments.filter(
+                    (comment) =>
+                        comment._id !== commentId
+                )
+            )
+        } catch (error) {
+            console.log("error deleting comment", error)
         }
     }
     return(
@@ -37,6 +57,8 @@ function CommentSection(videoId){
             placeholder="Add Comment"
             />
             <button onClick={handleComment}>Comment</button>
+
+            
             {
                 comments.map((comment)=>(
                     <div
@@ -44,6 +66,10 @@ function CommentSection(videoId){
                         className="border-b py-3"
                     >
                         <UserInfo creator={comment.owner}/>
+
+                        {user && comment.owner._id === user._id && (
+                            <button onClick={()=>handleDelete(comment._id)} className="text-red-500" >Delete</button>
+                        )}
 
                         <p>
                             {comment.content}

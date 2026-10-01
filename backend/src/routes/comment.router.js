@@ -4,10 +4,8 @@ import { getComment, addComment, deleteComment,updateComment } from "../controll
 
 const router = Router()
 
-router.use(verifyJWT)
+router.route("/:videoId").get(getComment).post(verifyJWT, addComment)
 
-router.route("/:videoId").get(getComment).post(addComment)
-
-router.route("/:commentId").patch(updateComment).delete(deleteComment)
+router.route("/:commentId").patch(verifyJWT, updateComment).delete(verifyJWT, deleteComment)
 
 export default router

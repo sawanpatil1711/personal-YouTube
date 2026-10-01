@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { formatDistanceToNow } from "date-fns";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import useRequireAuth from "../hook/useRequireAuth"
 import VideoPlayer from "../components/VideoPlayer"
 import LikeButton from "../components/LikeButton"
 import UserInfo from "../components/UserInfo";
@@ -17,6 +17,7 @@ function WatchVideo(){
     })
     const { videoId } = useParams()
     const { isAuthenticated } = useSelector((state)=>state.auth)
+    const requireAuth = useRequireAuth()
     // console.log("video id",videoId)
     useEffect(() => {
         const fetchVideo = async ()=>{
@@ -48,10 +49,7 @@ function WatchVideo(){
 
 
     const handleLike = async () => {
-        if(!isAuthenticated){
-                toast.error("Please login first")
-                return;
-            }
+        if (!requireAuth()) return;
 
         try {
             await videoLike(videoId)

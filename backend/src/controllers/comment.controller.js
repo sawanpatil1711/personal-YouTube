@@ -42,6 +42,7 @@ const getComment = asyncHandler(async (req, res)=> {
             $project: {
                 content: 1,
                 createdAt: 1,
+                "owner._id": 1,
                 "owner.username": 1,
                 "owner.fullname": 1,
                 "owner.avatar": 1,
