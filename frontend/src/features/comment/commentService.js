@@ -14,3 +14,10 @@ export const deleteComment = async (commentId) => {
     const response = await api.delete(`/comments/${commentId}`)
     return response.data
 }
+
+export const commentLike = async (commentId) => {
+    
+    const response = await api.post(`/likes/c/${commentId}`)
+    return response.data
+    
+}

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { toggleCommentLike, toggleTweetLike, toggleVideoLike, getAllVideoLike, getVideoLikeStatus } from "../controllers/like.controller.js";
+import { toggleCommentLike, toggleTweetLike, toggleVideoLike, getAllVideoLike, getVideoLikeStatus, getCommentLikeStatus, getTweetLikeStatus } from "../controllers/like.controller.js";
 import { verifyJWT } from "../middileware/auth.middileware.js";
 import { upload } from "../middileware/multer.middileware.js";
 
@@ -11,8 +11,10 @@ router.route("/v/:videoId").post(toggleVideoLike)
 router.route("/v/:videoId/status").get(getVideoLikeStatus)
 
 router.route("/c/:commentId").post(toggleCommentLike)
+router.route("/c/:commentId/status").get(getCommentLikeStatus)
 
 router.route("/t/:tweetId").post(toggleTweetLike)
+router.route("/t/:tweetId/status").get(getTweetLikeStatus)
 
 router.route("/videos").get(getAllVideoLike)
 

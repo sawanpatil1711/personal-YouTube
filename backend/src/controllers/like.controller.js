@@ -198,4 +198,53 @@ const getVideoLikeStatus = asyncHandler(async (req, res) => {
     );
 });
 
-export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getAllVideoLike, getVideoLikeStatus}
+const getCommentLikeStatus = asyncHandler(async (req, res) => {
+    const { commentId } = req.params;
+
+    const likesCount = await Like.countDocuments({
+        comment: commentId
+    });
+
+    const isLiked = await Like.exists({
+        comment: commentId,
+        likedBy: req.user._id
+    });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                likesCount,
+                isLiked: !!isLiked
+            },
+            "Comment like status fetched successfully"
+        )
+    );
+});
+
+const getTweetLikeStatus = asyncHandler(async (req, res) => {
+    const { tweetId } = req.params;
+
+    const likesCount = await Like.countDocuments({
+        tweet: tweetId
+    });
+
+    const isLiked = await Like.exists({
+        tweet: tweetId,
+        likedBy: req.user._id
+    });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                likesCount,
+                isLiked: !!isLiked
+            },
+            "tweet like status fetched successfully"
+        )
+    );
+});
+
+
+export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getAllVideoLike, getVideoLikeStatus, getCommentLikeStatus, getTweetLikeStatus }

@@ -39,9 +39,36 @@ const getComment = asyncHandler(async (req, res)=> {
             $unwind: "$owner",
         },
         {
+            $lookup: {
+                from: "likes",
+                localField: "_id",
+                foreignField: "comment",
+                as: "likes"
+            }
+        },
+        {
+            $addFields: {
+                likesCount: {
+                    $size: "$likes"
+                }
+            }
+        },
+        {
+            $addFields: {
+                isLiked: {
+                    $in: [
+                        req.user._id,
+                        "$likes.likedBy"
+                    ]
+                }
+            }
+        },
+        {
             $project: {
                 content: 1,
                 createdAt: 1,
+                likesCount: 1,
+                isLiked: 1,
                 "owner._id": 1,
                 "owner.username": 1,
                 "owner.fullname": 1,

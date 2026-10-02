@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
-import { getComment, addComment, deleteComment } from "../features/comment/commentService"
+import { getComment, addComment, deleteComment, commentLike} from "../features/comment/commentService"
 import UserInfo from "./UserInfo"
 import { useSelector } from "react-redux"
 import useRequireAuth from "../hook/useRequireAuth"
+import LikeButton from "./LikeButton"
 
 function CommentSection({videoId}){
     const [comments, setComments]= useState([])
@@ -47,6 +48,17 @@ function CommentSection({videoId}){
             console.log("error deleting comment", error)
         }
     }
+
+    const handleLike = async (commentId) =>{
+        try {
+            if (!requireAuth()) return;
+            await commentLike(commentId)
+            const response = await getComment(videoId)
+            setComments(response.data)
+        } catch (error) {
+            console.log("error handling comment like", error)
+        }
+    }
     return(
         <div>
             <h2>Comments</h2>
@@ -74,6 +86,16 @@ function CommentSection({videoId}){
                         <p>
                             {comment.content}
                         </p>
+
+                        <LikeButton
+                            like={{
+                                likesCount: comment.likesCount,
+                                isLiked: comment.isLiked
+                            }}
+                            hendelLike={() =>
+                                handleLike(comment._id)
+                            }
+                        />
                     </div>
                 ))
             }
