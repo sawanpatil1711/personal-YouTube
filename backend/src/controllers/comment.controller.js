@@ -57,7 +57,7 @@ const getComment = asyncHandler(async (req, res)=> {
             $addFields: {
                 isLiked: {
                     $in: [
-                        req.user._id,
+                        req.user?._id || null,
                         "$likes.likedBy"
                     ]
                 }
