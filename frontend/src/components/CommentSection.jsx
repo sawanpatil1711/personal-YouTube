@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getComment, addComment, deleteComment, commentLike} from "../features/comment/commentService"
+import { getComment, addComment, UpdateComment, deleteComment, commentLike} from "../features/comment/commentService"
 import UserInfo from "./UserInfo"
 import { useSelector } from "react-redux"
 import useRequireAuth from "../hook/useRequireAuth"
@@ -8,6 +8,8 @@ import LikeButton from "./LikeButton"
 function CommentSection({videoId}){
     const [comments, setComments]= useState([])
     const [userComment, setUserComment] = useState("")
+    const [editingCommentId, setEditingCommentId] = useState(null)
+    const [editingCommentContent, setEditingCommentContent] = useState("")
     const { user } = useSelector((state) => state.auth)
     const requireAuth = useRequireAuth()
 
@@ -49,6 +51,27 @@ function CommentSection({videoId}){
         }
     }
 
+    const startEditing = (comment) => {
+        setEditingCommentId(comment._id)
+        setEditingCommentContent(comment.content)
+    }
+
+    const handleUpdate = async (commentId) => {
+        try {
+            await UpdateComment(commentId, editingCommentContent)
+            setComments(
+                comments.map((comment) =>
+                    comment._id === commentId ? { ...comment, content: editingCommentContent } : comment
+                )
+            )
+            setEditingCommentId(null)
+            setEditingCommentContent("")
+        } catch (error) {
+            console.log("error updating comment", error)
+            console.log("Message:", error.response?.data?.message);
+        }
+    }
+
     const handleLike = async (commentId) =>{
         try {
             if (!requireAuth()) return;
@@ -80,12 +103,36 @@ function CommentSection({videoId}){
                         <UserInfo creator={comment.owner}/>
 
                         {user && comment.owner._id === user._id && (
-                            <button onClick={()=>handleDelete(comment._id)} className="text-red-500" >Delete</button>
+                            <> 
+                                <button onClick={()=>handleDelete(comment._id)} className="text-red-500" >Delete</button>
+
+                                <button
+                                    onClick={() => startEditing(comment)}
+                                    className="text-blue-500 ml-2 mr-2"
+                                >
+                                    Edit
+                                </button>
+                            </>
                         )}
 
-                        <p>
-                            {comment.content}
-                        </p>
+                        {
+                            editingCommentId === comment._id ? 
+                            (
+                                <>
+                                    <input
+                                        type="text"
+                                        value={editingCommentContent}
+                                        onChange={(e) => setEditingCommentContent(e.target.value)}
+                                    />
+                                    <button onClick={() => handleUpdate(comment._id)} className="text-blue-500 ml-2">Save</button>
+                                    <button onClick={()=> setEditingCommentId(null)}className="text-blue-500 ml-2">Cancel</button>
+                                </>
+                            ) : (
+                                    <p>
+                                        {comment.content}
+                                    </p>
+                                )
+                        }
 
                         <LikeButton
                             like={{

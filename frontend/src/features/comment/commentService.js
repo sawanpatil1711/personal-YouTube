@@ -10,6 +10,11 @@ export const addComment = async (videoId, userComment) => {
     return response.data
 }
 
+export const UpdateComment = async (commentId, newComment) => {
+    const response = await api.patch(`/comments/${commentId}`, {newComment})
+    return response.data
+}
+
 export const deleteComment = async (commentId) => {
     const response = await api.delete(`/comments/${commentId}`)
     return response.data
