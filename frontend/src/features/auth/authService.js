@@ -25,3 +25,8 @@ export const registerUser = async (formData) => {
     )
     return response.data
 }
+
+export const getChannelProfile = async (username) => {
+    const response = await api.get(`/users/c/${username}`)
+    return response.data
+}

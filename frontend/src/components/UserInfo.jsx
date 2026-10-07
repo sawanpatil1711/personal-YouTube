@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom";
+
 function UserInfo({creator}) {
   return (
     <div className="flex items-center gap-3 mt-4">
+      <Link to={`/channel/${creator.username}`}>
       <img
         src={creator.avatar}
         alt={creator.username}
@@ -10,6 +13,7 @@ function UserInfo({creator}) {
       <div>
         <h3 className="font-semibold">{creator.username}</h3>
       </div>
+      </Link>
     </div>
   );
 }
