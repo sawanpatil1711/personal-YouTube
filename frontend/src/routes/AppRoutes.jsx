@@ -4,6 +4,7 @@ import Register from "../pages/Register.jsx";
 import Home from "../pages/Home.jsx"
 import ProtectedRoute from "../components/ProtectedRoute.jsx"
 import Profile from "../pages/Profile.jsx";
+import LikedVideos from "../pages/LikedVideos.jsx";
 import MainLayout from "../layouts/MainLayout.jsx";
 import WatchVideo from "../pages/watchVideo.jsx";
 
@@ -19,6 +20,11 @@ function AppRoutes(){
                 <Route path="/profile" element={
                     <ProtectedRoute>
                         <Profile/>
+                    </ProtectedRoute>
+                } />
+                <Route path="/liked-videos" element={
+                    <ProtectedRoute>
+                        <LikedVideos/>
                     </ProtectedRoute>
                 } />
             </Route>

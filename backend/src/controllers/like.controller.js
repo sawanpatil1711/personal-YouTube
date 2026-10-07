@@ -158,10 +158,21 @@ const toggleTweetLike = asyncHandler( async (req, res) => {
 })
 
 const getAllVideoLike = asyncHandler( async (req, res) => {
+    const {page = 1, limit = 10} = req.query;
+
     const likedVideos = await Like.find({
         likedBy: req.user._id,
         video: {$exists: true}
     })
+    .populate({
+        path: "video",
+        populate: {
+            path: "creator",
+            select: "username avatar"
+        }
+    })
+    .limit(Number(limit))
+    .skip((Number(page) - 1) * Number(limit))
 
     return res
     .status(200)

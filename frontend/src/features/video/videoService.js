@@ -25,3 +25,8 @@ export const videoLikeStatus = async (videoId) => {
     const response = await api.get(`/likes/v/${videoId}/status`)
     return response.data
 }
+
+export const videoLikedByUser = async () => {
+    const response = await api.get("/likes/videos")
+    return response.data
+}
