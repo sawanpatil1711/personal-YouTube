@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { getComment, addComment, UpdateComment, deleteComment, commentLike} from "../features/comment/commentService"
 import UserInfo from "./UserInfo"
+import { formatDistanceToNow } from "date-fns"
 import { useSelector } from "react-redux"
 import useRequireAuth from "../hook/useRequireAuth"
 import LikeButton from "./LikeButton"
@@ -82,72 +83,160 @@ function CommentSection({videoId}){
             console.log("error handling comment like", error)
         }
     }
-    return(
-        <div>
-            <h2>Comments</h2>
 
-            <input type="text" 
-            value={userComment} 
-            onChange={(e)=>{setUserComment(e.target.value)}} 
-            placeholder="Add Comment"
-            />
-            <button onClick={handleComment}>Comment</button>
+return (
+    <div className="w-full text-gray-900">
 
-            
-            {
-                comments.map((comment)=>(
-                    <div
-                        key={comment._id}
-                        className="border-b py-3"
-                    >
-                        <UserInfo creator={comment.owner}/>
+        {/* Add Comment */}
+        <div className="flex gap-3 mb-8">
+            <div className="flex-1 min-w-0">
+                <input
+                    type="text"
+                    value={userComment}
+                    onChange={(e) => setUserComment(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && userComment.trim()) {
+                            handleComment();
+                        }
+                    }}
+                    placeholder="Add a comment..."
+                    className="w-full border-b border-gray-300 bg-transparent pb-2 text-sm outline-none transition-colors focus:border-gray-900 placeholder:text-gray-500"
+                />
 
-                        {user && comment.owner._id === user._id && (
-                            <> 
-                                <button onClick={()=>handleDelete(comment._id)} className="text-red-500" >Delete</button>
+                {userComment.trim() && (
+                    <div className="flex justify-end gap-2 mt-3">
+                        <button
+                            onClick={() => setUserComment("")}
+                            className="rounded-full px-4 py-2 text-sm font-medium hover:bg-gray-100"
+                        >
+                            Cancel
+                        </button>
 
-                                <button
-                                    onClick={() => startEditing(comment)}
-                                    className="text-blue-500 ml-2 mr-2"
-                                >
-                                    Edit
-                                </button>
-                            </>
-                        )}
+                        <button
+                            onClick={handleComment}
+                            className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+                        >
+                            Comment
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
 
-                        {
-                            editingCommentId === comment._id ? 
-                            (
-                                <>
+        {/* Comments */}
+        <div className="space-y-6">
+            {comments.length === 0 ? (
+                <p className="py-6 text-center text-sm text-gray-500">
+                    No comments yet. Be the first to comment.
+                </p>
+            ) : (
+                comments.map((comment) => (
+                    <div key={comment._id} className="flex gap-3">
+
+                        {/* Avatar */}
+                        <img
+                            src={comment.owner?.avatar || "/default-avatar.png"}
+                            alt={comment.owner?.username || "User"}
+                            className="h-10 w-10 shrink-0 rounded-full object-cover bg-gray-200"
+                        />
+
+                        {/* Comment Body */}
+                        <div className="min-w-0 flex-1">
+
+                            {/* Username */}
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="text-sm font-semibold">
+                                    @{comment.owner?.username || "user"}
+                                </span>
+
+                                <span className="text-xs text-gray-500">
+                                    {comment.createdAt &&
+                                        formatDistanceToNow(
+                                            new Date(comment.createdAt),
+                                            { addSuffix: true }
+                                        )}
+                                </span>
+                            </div>
+
+                            {/* Edit Mode */}
+                            {editingCommentId === comment._id ? (
+                                <div className="mt-2">
                                     <input
                                         type="text"
                                         value={editingCommentContent}
-                                        onChange={(e) => setEditingCommentContent(e.target.value)}
+                                        onChange={(e) =>
+                                            setEditingCommentContent(e.target.value)
+                                        }
+                                        className="w-full border-b border-gray-400 bg-transparent py-2 text-sm outline-none focus:border-blue-600"
+                                        autoFocus
                                     />
-                                    <button onClick={() => handleUpdate(comment._id)} className="text-blue-500 ml-2">Save</button>
-                                    <button onClick={()=> setEditingCommentId(null)}className="text-blue-500 ml-2">Cancel</button>
-                                </>
-                            ) : (
-                                    <p>
-                                        {comment.content}
-                                    </p>
-                                )
-                        }
 
-                        <LikeButton
-                            like={{
-                                likesCount: comment.likesCount,
-                                isLiked: comment.isLiked
-                            }}
-                            hendelLike={() =>
-                                handleLike(comment._id)
-                            }
-                        />
+                                    <div className="mt-2 flex gap-2">
+                                        <button
+                                            onClick={() => handleUpdate(comment._id)}
+                                            className="rounded-full bg-gray-900 px-4 py-2 text-xs font-medium text-white hover:bg-gray-700"
+                                        >
+                                            Save
+                                        </button>
+
+                                        <button
+                                            onClick={() => setEditingCommentId(null)}
+                                            className="rounded-full px-4 py-2 text-xs font-medium hover:bg-gray-100"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-6">
+                                    {comment.content}
+                                </p>
+                            )}
+
+                            {/* Actions */}
+                            <div className="mt-2 flex flex-wrap items-center gap-1">
+
+                                <div className="[&_button]:!text-gray-600">
+                                    <LikeButton
+                                        like={{
+                                            likesCount: comment.likesCount,
+                                            isLiked: comment.isLiked,
+                                        }}
+                                        hendelLike={() =>
+                                            handleLike(comment._id)
+                                        }
+                                    />
+                                </div>
+
+                                {user &&
+                                    comment.owner?._id === user._id &&
+                                    editingCommentId !== comment._id && (
+                                        <>
+                                            <button
+                                                onClick={() => startEditing(comment)}
+                                                className="rounded-full px-3 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100"
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleDelete(comment._id)}
+                                                className="rounded-full px-3 py-2 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-red-600"
+                                            >
+                                                Delete
+                                            </button>
+                                        </>
+                                    )}
+                            </div>
+                        </div>
                     </div>
                 ))
-            }
+            )}
         </div>
-    )
+    </div>
+);
+
+
 }
 
 export default CommentSection

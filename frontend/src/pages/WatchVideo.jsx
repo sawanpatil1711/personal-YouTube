@@ -60,32 +60,80 @@ function WatchVideo(){
         }
     }
     return (
-        <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 py-6 lg:px-8">
             
-            <VideoPlayer video={video}/>
+            {/* Main Content */}
+            <div className="max-w-5xl mx-auto">
 
-            <UserInfo creator={video.creator}/>
+                {/* Video Player */}
+                <div className="overflow-hidden rounded-xl bg-black shadow-sm">
+                    <VideoPlayer video={video} />
+                </div>
 
-            <LikeButton 
-            like={like}
-            hendelLike={handleLike}
-            />
+                {/* Video Title */}
+                <h1 className="mt-5 text-xl sm:text-2xl font-bold text-gray-900 leading-snug">
+                    {video.title}
+                </h1>
 
-            <div className="text-gray-500 mt-2">
-                {video.views} views • {" "}
-                {formatDistanceToNow(
-                    new Date(video.createdAt),
-                    { addSuffix: true }
-                )}
+                {/* Creator and Like Button */}
+                <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    
+                    <div className="min-w-0">
+                        <UserInfo creator={video.creator} />
+                    </div>
+
+                    <div className="flex shrink-0 items-center">
+                        <LikeButton
+                            like={like}
+                            hendelLike={handleLike}
+                        />
+                    </div>
+                </div>
+
+                {/* Video Statistics */}
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                    <span className="font-semibold text-gray-800">
+                        {Number(video.views || 0).toLocaleString("en-IN")} views
+                    </span>
+
+                    <span className="text-gray-400">•</span>
+
+                    <span>
+                        {formatDistanceToNow(
+                            new Date(video.createdAt),
+                            { addSuffix: true }
+                        )}
+                    </span>
+                </div>
+
+                {/* Description */}
+                <div className="mt-5 rounded-xl bg-gray-100 p-4 sm:p-5">
+                    <h2 className="mb-2 text-base font-semibold text-gray-900">
+                        Description
+                    </h2>
+
+                    <p className="whitespace-pre-wrap break-words text-sm leading-7 text-gray-700">
+                        {video.description || "No description available."}
+                    </p>
+                </div>
+
+                {/* Divider */}
+                <div className="my-8 border-t border-gray-200" />
+
+                {/* Comments */}
+                <section className="pb-10">
+                    <h2 className="mb-5 text-xl font-bold text-gray-900">
+                        Comments
+                    </h2>
+
+                    <CommentSection videoId={videoId} />
+                </section>
+
             </div>
-
-            <p className="mt-4">
-                {video.description}
-            </p>
-
-            <CommentSection videoId={videoId}/>
         </div>
-    );
+    </div>
+);
 }
 
 export default WatchVideo
