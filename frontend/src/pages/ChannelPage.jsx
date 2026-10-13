@@ -22,6 +22,7 @@ function ChannelPage(){
                 setChannelVideos(videosResponse.data.videos)
             } catch (error) {
                 console.error("Error fetching channel data:", error)
+                console.log("error fetching channel data", error.response?.data?.message || error);
             }
         }
 
