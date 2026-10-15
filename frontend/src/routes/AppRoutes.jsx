@@ -16,7 +16,7 @@ function AppRoutes(){
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/video/:videoId" element={<WatchVideo />} />
-            <Route path="/channel/:username" element={<ChannelPage />} />
+            <Route path="/channel/:channelId" element={<ChannelPage />} />
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/profile" element={

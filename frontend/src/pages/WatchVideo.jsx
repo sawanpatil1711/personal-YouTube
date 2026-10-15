@@ -8,6 +8,7 @@ import VideoPlayer from "../components/VideoPlayer"
 import LikeButton from "../components/LikeButton"
 import UserInfo from "../components/UserInfo";
 import CommentSection from "../components/CommentSection";
+import SubscribeButton from "../components/SubscribeButton";
 
 function WatchVideo(){
     const [video, setvideo] = useState(null)
@@ -83,7 +84,11 @@ function WatchVideo(){
                         <UserInfo creator={video.creator} />
                     </div>
 
-                    <div className="flex shrink-0 items-center">
+                    <div className="flex shrink-0 items-center gap-4">
+                        <SubscribeButton creatorChannelId={video.creator._id}/>
+                    </div>
+
+                    <div>
                         <LikeButton
                             like={like}
                             hendelLike={handleLike}

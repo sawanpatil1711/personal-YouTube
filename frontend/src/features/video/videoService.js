@@ -31,7 +31,7 @@ export const videoLikedByUser = async () => {
     return response.data
 }
 
-export const getChannelVideos = async (username) => {
-    const response = await api.get(`/videos?username=${username}`)
+export const getChannelVideos = async (channelId) => {
+    const response = await api.get(`/videos?channelId=${channelId}`)
     return response.data
 }

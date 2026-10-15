@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function UserInfo({creator}) {
   return (
     <div className="flex items-center gap-3 mt-4">
-      <Link to={`/channel/${creator.username}`}>
+      <Link to={`/channel/${creator._id}`}>
       <img
         src={creator.avatar}
         alt={creator.username}

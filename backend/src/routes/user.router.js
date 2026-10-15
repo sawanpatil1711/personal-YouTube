@@ -39,7 +39,7 @@ router.route('/update/cover-image').patch(verifyJWT, upload.single('coverImage')
 
 router.route('/deleteUser').delete(verifyJWT, deleteUser)
 
-router.route('/c/:username').get(verifyJWT, getUserChannelProfile)
+router.route('/c/:channelId').get(verifyJWT, getUserChannelProfile)
 
 router.route('/watch-history').get(verifyJWT, getUserWatchHistory)
 

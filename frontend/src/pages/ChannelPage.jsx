@@ -7,18 +7,19 @@ import { getChannelVideos } from "../features/video/videoService.js"
 import VideoCard from "../components/VideoCard.jsx";
 
 function ChannelPage(){
-    const { username } = useParams()
+    const { channelId } = useParams()
 
     const [channelProfile, setChannelProfile] = useState(null)
     const [channelVideos, setChannelVideos] = useState([])
 
+    console.log("channelId", channelId)
     useEffect(() => {
         const fetchChannelData = async () => {
             try {
-                const profileResponse = await getChannelProfile(username)
+                const profileResponse = await getChannelProfile(channelId)
                 setChannelProfile(profileResponse.data)
 
-                const videosResponse = await getChannelVideos(username)
+                const videosResponse = await getChannelVideos(channelId)
                 setChannelVideos(videosResponse.data.videos)
             } catch (error) {
                 console.error("Error fetching channel data:", error)
@@ -27,7 +28,7 @@ function ChannelPage(){
         }
 
         fetchChannelData()
-    }, [username])
+    }, [channelId])
 
     if(!channelProfile){
         return <h1>Loading...</h1>
