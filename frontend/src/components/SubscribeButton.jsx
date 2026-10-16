@@ -10,7 +10,7 @@
 //         const fetchSubscriptionStatus = async () => {
 //             try {
 //                 const response = await getChannelProfile(creatorChannelId)
-//                 setIsSubscribed(response.data.data.isSubscribed)
+//                 setIsSubscribed(response.data.isSubscribed)
 //             } catch (error) {
 //                 console.log("error fetching subscription Status", error)
 //             }
@@ -68,7 +68,7 @@ function SubscribeButton({ creatorChannelId }) {
 
         if (!cancelled) {
           setIsSubscribed(
-            response.data.data.isSubscribed
+            response.data.isSubscribed
           );
         }
       } catch (error) {
