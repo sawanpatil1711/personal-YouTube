@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getChannelProfile } from "../features/auth/authService.js"
 import { getChannelVideos } from "../features/video/videoService.js"
 
+import SubscribeButton from "../components/SubscribeButton.jsx";
 import VideoCard from "../components/VideoCard.jsx";
 
 function ChannelPage(){
@@ -67,6 +68,10 @@ function ChannelPage(){
                     <p className="text-gray-500 mt-1">
                         {channelProfile.subscribersCount} Subscribers
                     </p>
+                </div>
+
+                <div className="mt-4 md:mt-0">
+                        <SubscribeButton creatorChannelId={channelProfile._id}/>
                 </div>
             </div>
 
