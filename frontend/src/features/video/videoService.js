@@ -35,3 +35,8 @@ export const getChannelVideos = async (channelId) => {
     const response = await api.get(`/videos?channelId=${channelId}`)
     return response.data
 }
+
+export const uploadVideo = async (formData) => {
+    const response = await api.post("/videos/uploadVideo", formData)
+    return response.data
+}

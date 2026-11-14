@@ -8,6 +8,7 @@ import LikedVideos from "../pages/LikedVideos.jsx";
 import MainLayout from "../layouts/MainLayout.jsx";
 import WatchVideo from "../pages/watchVideo.jsx";
 import ChannelPage from "../pages/ChannelPage.jsx";
+import VideoUpload from "../pages/VideoUpload.jsx";
 
 function AppRoutes(){
     return(
@@ -27,6 +28,11 @@ function AppRoutes(){
                 <Route path="/liked-videos" element={
                     <ProtectedRoute>
                         <LikedVideos/>
+                    </ProtectedRoute>
+                } />
+                <Route path="/upload" element={
+                    <ProtectedRoute>
+                        <VideoUpload/>
                     </ProtectedRoute>
                 } />
             </Route>
