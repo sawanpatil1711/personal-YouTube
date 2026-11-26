@@ -32,7 +32,7 @@ export const videoLikedByUser = async () => {
 }
 
 export const getChannelVideos = async (channelId) => {
-    const response = await api.get(`/videos?channelId=${channelId}`)
+    const response = await api.get(`/videos?userId=${channelId}`)
     return response.data
 }
 

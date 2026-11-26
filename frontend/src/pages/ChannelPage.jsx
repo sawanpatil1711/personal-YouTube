@@ -31,6 +31,8 @@ function ChannelPage(){
         fetchChannelData()
     }, [channelId])
 
+    console.log("channelVideos",channelVideos)
+
     if(!channelProfile){
         return <h1>Loading...</h1>
     }
