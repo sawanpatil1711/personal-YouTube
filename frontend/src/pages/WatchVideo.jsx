@@ -9,6 +9,7 @@ import LikeButton from "../components/LikeButton"
 import UserInfo from "../components/UserInfo";
 import CommentSection from "../components/CommentSection";
 import SubscribeButton from "../components/SubscribeButton";
+import { addToWatchHistory } from "../features/auth/authService";
 
 function WatchVideo(){
     const [video, setvideo] = useState(null)
@@ -25,6 +26,7 @@ function WatchVideo(){
             try {
                 await incrementViews(videoId)
                 const response = await getVideoById(videoId)
+                await addToWatchHistory(videoId)
                 setvideo(response.data)
             } catch (error) {
                 console.log('error fatching wathVideo data', error)

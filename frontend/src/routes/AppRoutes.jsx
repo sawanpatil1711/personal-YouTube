@@ -9,6 +9,7 @@ import MainLayout from "../layouts/MainLayout.jsx";
 import WatchVideo from "../pages/watchVideo.jsx";
 import ChannelPage from "../pages/ChannelPage.jsx";
 import VideoUpload from "../pages/VideoUpload.jsx";
+import WatchHistory from "../pages/WatchHistory.jsx"
 
 function AppRoutes(){
     return(
@@ -33,6 +34,11 @@ function AppRoutes(){
                 <Route path="/upload" element={
                     <ProtectedRoute>
                         <VideoUpload/>
+                    </ProtectedRoute>
+                } />
+                <Route path="/watch-history" element={
+                    <ProtectedRoute>
+                        <WatchHistory/>
                     </ProtectedRoute>
                 } />
             </Route>

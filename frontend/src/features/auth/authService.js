@@ -30,3 +30,13 @@ export const getChannelProfile = async (username) => {
     const response = await api.get(`/users/c/${username}`)
     return response.data
 }
+
+export const getUserWatchHistory = async () => {
+    const response = await api.get("/users/watch-history")
+    return response.data
+}
+
+export const addToWatchHistory = async (videoId) => {
+    const response = await api.patch(`/users/watch-history/${videoId}`)
+    return response.data
+}

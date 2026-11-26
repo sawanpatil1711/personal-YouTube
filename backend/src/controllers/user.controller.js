@@ -1,6 +1,7 @@
 import {asyncHandler} from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/ApiError.js';
 import { User } from '../models/user.model.js';
+import { Video } from '../models/video.model.js';
 import { uploadOnCloudinary, deleteFromCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from "jsonwebtoken"
@@ -524,4 +525,45 @@ const getUserWatchHistory = asyncHandler( async(req, res) => {
     ) 
 })
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, updatePassword, getCurrentUser, updateUserDetails, updateUserAvatar, updateUserCoverImage, deleteUser, getUserChannelProfile, getUserWatchHistory }
+const addToWatchHistory = asyncHandler(async (req, res) => {
+    const { videoId } = req.params;
+
+    // Check whether video exists
+    const video = await Video.findById(videoId);
+
+    if (!video) {
+        throw new ApiError(404, "Video not found");
+    }
+
+    // Add video ID to logged-in user's watch history
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $pull: {
+                watchHistory: videoId
+            }
+        }
+    );
+
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $push: {
+                watchHistory: {
+                    $each: [videoId],
+                    $position: 0
+                }
+            }
+        }
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Video added to watch history successfully"
+        )
+    );
+});
+
+export { registerUser, loginUser, logoutUser, refreshAccessToken, updatePassword, getCurrentUser, updateUserDetails, updateUserAvatar, updateUserCoverImage, deleteUser, getUserChannelProfile, getUserWatchHistory, addToWatchHistory }
