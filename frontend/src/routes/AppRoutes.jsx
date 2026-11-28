@@ -10,6 +10,8 @@ import WatchVideo from "../pages/watchVideo.jsx";
 import ChannelPage from "../pages/ChannelPage.jsx";
 import VideoUpload from "../pages/VideoUpload.jsx";
 import WatchHistory from "../pages/WatchHistory.jsx"
+import Subscriptions from "../pages/Subscriptions.jsx"
+import Playlists from "../pages/Playlists.jsx"
 
 function AppRoutes(){
     return(
@@ -39,6 +41,16 @@ function AppRoutes(){
                 <Route path="/watch-history" element={
                     <ProtectedRoute>
                         <WatchHistory/>
+                    </ProtectedRoute>
+                } />
+                <Route path="/subscriptions" element={
+                    <ProtectedRoute>
+                        <Subscriptions/>
+                    </ProtectedRoute>
+                } />
+                <Route path="/playlists" element={
+                    <ProtectedRoute>
+                        <Playlists/>
                     </ProtectedRoute>
                 } />
             </Route>
